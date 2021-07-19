@@ -50,9 +50,9 @@ function showTasks(){
   }
   listArray.forEach((element, index) => {
     let taskDiv = document.createElement("div");
-
+    taskDiv.classList.add("taskDiv");
     let taskName= document.createElement('p');
-    // taskName.classList.add("taskName");
+    taskName.classList.add("taskName");
     taskName.innerHTML=element;
     taskDiv.appendChild(taskName);
     let deleteButton = document.createElement("button");
