@@ -31,29 +31,50 @@ addBtn.onclick = ()=>{ //when user click on plus icon button
 }
 
 function showTasks(){
+  let listArray=[];
   let getLocalStorageData = localStorage.getItem("New Todo");
   if(getLocalStorageData == null){
     listArray = [];
   }else{
-    listArray = JSON.parse(getLocalStorageData); 
+    listArray = JSON.parse(getLocalStorageData);
   }
-  const pendingTasksNumb = document.querySelector(".pendingTasks");
-  pendingTasksNumb.textContent = listArray.length; //passing the array length in pendingtask
+  // const pendingTasksNumb = document.querySelector(".pendingTasks");
+  // pendingTasksNumb.textContent = listArray.length; //passing the array length in pendingtask
   if(listArray.length > 0){ //if array length is greater than 0
     deleteAllBtn.classList.add("active"); //active the delete button
   }else{
     deleteAllBtn.classList.remove("active"); //unactive the delete button
   }
-  let newLiTag = "";
+  while (todoList.firstChild) {
+    todoList.removeChild(todoList.firstChild);
+  }
   listArray.forEach((element, index) => {
-    newLiTag += `<li>${index+1}) ${element}<span class="icon" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
+    let taskDiv = document.createElement("div");
+
+    let taskName= document.createElement('p');
+    // taskName.classList.add("taskName");
+    taskName.innerHTML=element;
+    taskDiv.appendChild(taskName);
+    let deleteButton = document.createElement("button");
+    deleteButton.innerHTML="Delete";
+    deleteButton.classList.add("deleteButton");
+    let id=index.toString();
+    deleteButton.setAttribute("id",id);
+    deleteButton.addEventListener('click',()=>deleteTask(index));
+    taskDiv.appendChild(deleteButton);
+    taskDiv.classList.add("taskDiv");
+    todoList.appendChild(taskDiv);
+    console.log("event listener attached");
+
   });
-  todoList.innerHTML = newLiTag; //adding new li tag inside ul tag
+  // todoList.innerHTML = newLiTag; //adding new li tag inside ul tag
   inputBox.value = ""; //once task added leave the input field blank
 }
 
+
 // delete task function
 function deleteTask(index){
+  console.log("index= "+index);
   let getLocalStorageData = localStorage.getItem("New Todo");
   listArray = JSON.parse(getLocalStorageData);
   listArray.splice(index, 1); //delete or remove the li
